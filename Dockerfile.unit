@@ -1,0 +1,19 @@
+# Use a base image with Java and Maven
+FROM maven:3.8.6-jdk-11
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the pom.xml and download dependencies
+COPY pom.xml .
+
+RUN mvn dependency:go-offline
+
+# Copy the application source code
+COPY src/ ./src/
+
+# Copy the mule-artifact.json file
+COPY mule-artifact.json /app/
+
+# Run unit tests
+CMD ["mvn", "test"]
